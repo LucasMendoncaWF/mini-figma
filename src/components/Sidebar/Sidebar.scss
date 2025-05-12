@@ -1,0 +1,17 @@
+@use '../../assets/variables.scss' as *;
+
+.side-bar {
+  min-width: 300px;
+  width: 300px;
+  background-color: $bg;
+  user-select: none;
+  
+  .permanent-content {
+    padding: 20px;
+    background-color: rgba(255,255,255, 0.1);
+  }
+
+  .content {
+    padding: 20px;
+  }
+}

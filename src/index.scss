@@ -1,0 +1,57 @@
+@use 'assets/variables.scss' as *;
+
+body {
+  margin: 0;
+  font-family: 'Ubuntu';
+}
+
+.header {
+  background-color:$bg;
+  padding: 10px;
+}
+
+.flex {
+  display: flex;
+}
+
+.screen-height {
+  height: $screenSize;
+  min-height: 500px;
+}
+
+.button {
+  &__primary {
+    background-color: $primary;
+    color: $bg;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+}
+
+button {
+  transition: $animationTransition;
+  &:hover {
+    opacity: 0.8;
+  }
+  &:active {
+    transform: scale(0.8);
+  }
+}
+
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+::-webkit-scrollbar-track {
+  background: black;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: $primary;
+}
