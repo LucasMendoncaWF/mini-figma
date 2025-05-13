@@ -1,6 +1,6 @@
 import Canvas from './components/Canvas';
 import SideBar from './components/Sidebar';
-import { useShapesStore } from './hooks/useShape';
+import { useShapesStore } from './stores/useShape';
 
 const App = () => {
   const { shapes, updateShape } = useShapesStore();

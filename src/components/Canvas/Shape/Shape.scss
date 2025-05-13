@@ -1,0 +1,34 @@
+@use '../../../assets/variables.scss' as *;
+
+.shape {
+  position: absolute;
+  cursor: move;
+  user-select: none;
+
+  &--focused {
+    box-shadow: -1px 1px 4px 1px $secondary;
+  }
+
+  &:hover {
+    .shape__resize-handle {
+      display: block
+    }
+  }
+
+  &__text {
+    white-space: pre-wrap;
+  }
+
+  &__resize-handle {
+    display: none;
+    position: absolute;
+    bottom: -4px;
+    right: -4px;
+    width: 12px;
+    height: 12px;
+    border-right: 2px solid $primary;
+    border-bottom: 2px solid $primary;
+    cursor: nwse-resize;
+  }
+}
+

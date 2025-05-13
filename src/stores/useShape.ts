@@ -1,23 +1,27 @@
 import { create,  } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { Shape } from '../types';
-import { unit } from '../constants/units';
 
 interface ShapeStore {
-  focused: HTMLDivElement | null;
+  unit: number;
+  focusedShape: Shape | null;
   shapes: Shape[];
+  setUnit: (unit: number) => void;
   addRectangle: () => void;
   updateShape: (id: string, newProps: Partial<Shape>) => void;
-  setFocused: (el: HTMLDivElement | null) => void;
+  setFocusedShape: (el: Shape | null) => void;
   onDelete: (id: string) => void;
 }
 
 export const useShapesStore = create<ShapeStore>()(
   persist(
     (set, get) => ({
-      focused: null,
+      focusedShape: null,
+      unit: 14,
       shapes: [],
+      setUnit: (value) => set({unit: value}),
       addRectangle: () => {
+        const unit = get().unit;
         const canvas = document.querySelector('.canvas');
         const scrollLeft = canvas?.scrollLeft || 0;
         const scrollTop = canvas?.scrollTop || 0;
@@ -30,11 +34,23 @@ export const useShapesStore = create<ShapeStore>()(
           id: `shape-${lastId + 1}`,
           x: scrollLeft + unit * 3,
           y: scrollTop + unit * 3,
-          width: unit * 8,
-          height: unit * 8,
           style: {
+            width: unit * 8,
+            height: unit * 8,
             backgroundColor: 'white',
-            zIndex: lastId + 1
+            zIndex: lastId + 1,
+            textAlign: 'left',
+            borderStyle: 'solid',
+            color: '#000',
+            borderColor: "#000",
+            borderWidth: 0,
+            borderRadius: 0,
+            paddingLeft: 0,
+            paddingRight: 0,
+            paddingTop: 0,
+            paddingBottom: 0,
+            fontSize: 12,
+            lineHeight: 12,
           }
         };
         set((state) => ({
@@ -48,8 +64,8 @@ export const useShapesStore = create<ShapeStore>()(
           ),
         }));
       },
-      setFocused: (el) => {
-        set({ focused: el });
+      setFocusedShape: (shape) => {
+        set({ focusedShape: shape });
       },
       onDelete: (id) => {
         const shapes = get().shapes;

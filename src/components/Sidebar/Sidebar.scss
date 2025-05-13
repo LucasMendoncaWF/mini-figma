@@ -5,13 +5,34 @@
   width: 300px;
   background-color: $bg;
   user-select: none;
+  overflow-y: auto;
+
+  .button__primary {
+    margin-top: 20px;
+  }
   
-  .permanent-content {
+  &__permanent-content {
     padding: 20px;
     background-color: rgba(255,255,255, 0.1);
   }
 
-  .content {
+  &__content {
     padding: 20px;
+  }
+
+  &__label {
+    color: $text;
+    margin-bottom: 5px;
+    font-size: 18px;
+    letter-spacing: 2px;
+    margin-top: 25px;
+    padding-top: 15px;
+    border-top: 2px solid rgba($text, 0.3);
+
+    &--first {
+      border-top: 0;
+      margin-top: 0;
+      padding-top: 0;
+    }
   }
 }

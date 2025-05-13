@@ -1,0 +1,24 @@
+@use '../../../assets/variables.scss' as *;
+
+.alignment-style {
+  margin-top: 10px;
+  justify-content: center;
+  button {
+    width: 30px;
+    background-color: $bg;
+    border: 2px solid rgba(white, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4px;
+
+    &.selected {
+      background-color: rgba(white, 0.2);
+    }
+
+    img {
+      width: 100%;
+      filter: invert(1);
+    }
+  }
+}

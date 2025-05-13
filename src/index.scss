@@ -2,7 +2,7 @@
 
 body {
   margin: 0;
-  font-family: 'Ubuntu';
+  font-family: 'Segoe UI';
 }
 
 .header {
@@ -12,6 +12,14 @@ body {
 
 .flex {
   display: flex;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.gap {
+  gap: 10px;
 }
 
 .screen-height {
@@ -33,15 +41,72 @@ body {
 }
 
 button {
+  cursor: pointer;
   transition: $animationTransition;
   &:hover {
-    opacity: 0.8;
+    opacity: 0.7;
+    transform: scale(1.05);
   }
   &:active {
     transform: scale(0.8);
   }
 }
 
+.input-material {
+
+  $inputBorder: rgba(white, 0.3);
+
+  &__area {
+    &--full {
+      width: 100%;
+    }
+
+    &--half {
+      width: 50%;
+    }
+  }
+
+  &__field {
+    padding: 5px;
+    width: calc(100% - 10px);
+    resize: vertical;
+    border: none;
+    color: rgba(white, 0.8);
+    background-color: black;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &__group {
+    border: 2px solid $inputBorder;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+
+  &__unit {
+    background-color: $inputBorder;
+    font-size: 12px;
+    padding: 4px;
+    color: $text;
+    border-left: 1px solid $inputBorder;
+  }
+
+  &__label {
+    color: $text;
+    margin-top: 15px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    letter-spacing: 1px;
+  }
+
+  &__color-sample {
+    width: 30px;
+    height: auto;
+    border-right: 1px solid $inputBorder;
+  }
+}
 
 ::-webkit-scrollbar {
     width: 6px;
@@ -53,5 +118,5 @@ button {
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: $primary;
+  background-color: white;
 }

@@ -6,13 +6,21 @@
   overflow: auto;
   position: relative;
 
-  .content {
-    width: 10000px;
-    height: 10000px;
+  &__content {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 20000px;
+    height: 20000px;
     background-image: 
     linear-gradient(to right, rgba(85, 85, 85, 0.2) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(59, 59, 59, 0.2) 1px, transparent 1px);
     background-position: top left;
     background-color: rgba($bg, 0.1);
+  }
+
+  &__guide-line {
+    background-color: $primary;
+    position: absolute;
   }
 }
