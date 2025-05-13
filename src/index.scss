@@ -88,9 +88,9 @@ button {
   &__unit {
     background-color: $inputBorder;
     font-size: 12px;
-    padding: 4px;
-    color: $text;
-    border-left: 1px solid $inputBorder;
+    line-height: 15px;
+    padding: 4px 6px;
+    color: rgba($text, 0.6);
   }
 
   &__label {
@@ -109,14 +109,14 @@ button {
 }
 
 ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 4px;
+    height: 4px;
   }
 
 ::-webkit-scrollbar-track {
-  background: black;
+  background: $bg;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: white;
+  background-color: rgba($primary, 0.4);
 }

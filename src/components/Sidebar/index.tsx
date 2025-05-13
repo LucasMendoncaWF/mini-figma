@@ -91,9 +91,9 @@ export default function SideBar() {
               </div>
               <div>
                 <TextArea size="full" label="" name="text-content" value={text} onChange={onChangeTextArea}/>
+                <ColorPicker label='Text Color' value={style?.color} onChange={onChange} name="color" />
                 <Alignment value={style?.textAlign} onChange={onChange} />
               </div>
-              <ColorPicker label='Text Color' value={style?.color} onChange={onChange} name="color" />
             </div>
             <div>
               <div className="side-bar__label"><label>Padding</label></div>
