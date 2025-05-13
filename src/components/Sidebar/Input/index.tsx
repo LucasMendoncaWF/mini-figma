@@ -43,7 +43,7 @@ onChange
   }
 
   useEffect(() => {
-    if(type === 'number' && !!value) {
+    if(type === 'number' && (!!value || value === 0)) {
       const input = inputRef.current;
       const handleWheel = (e: WheelEvent) => {
         e.stopPropagation();

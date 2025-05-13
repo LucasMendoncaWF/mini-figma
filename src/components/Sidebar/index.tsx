@@ -73,6 +73,9 @@ export default function SideBar() {
                 <Input size="half" label="Width" name="width" type="number" unit='px' value={style?.width} onChange={onChange} />
                 <Input size="half" label="Height" name="height" type="number" unit='px' value={style?.height} onChange={onChange} />
               </div>
+              <div className="flex justify-between gap">
+                <Input size="half" label="Opacity" name="opacity" type="number" max={100} min={0} unit='px' value={style?.opacity} onChange={onChange} />
+              </div>
               <ColorPicker label='Background Color' value={style?.backgroundColor} onChange={onChange} name="backgroundColor" />
              </div>
             <div>
@@ -90,7 +93,7 @@ export default function SideBar() {
                 <Input size="half" label="Line Height" name="lineHeight" type="number" unit='px' value={style?.lineHeight} onChange={onChange} />
               </div>
               <div>
-                <TextArea size="full" label="" name="text-content" value={text} onChange={onChangeTextArea}/>
+                <TextArea size="full" label="Text Content" name="text-content" value={text} onChange={onChangeTextArea}/>
                 <ColorPicker label='Text Color' value={style?.color} onChange={onChange} name="color" />
                 <Alignment value={style?.textAlign} onChange={onChange} />
               </div>

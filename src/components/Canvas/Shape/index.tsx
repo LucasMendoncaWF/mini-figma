@@ -37,6 +37,7 @@ const ShapeComponent = React.forwardRef<HTMLDivElement, Props>(({
 
   const onMouseDown = (e: React.MouseEvent) => {
     if (!canvasRef.current) return;
+    e.stopPropagation();
     const canvasRect = canvasRef.current.getBoundingClientRect();
     const scrollLeft = canvasRef.current.scrollLeft;
     const scrollTop = canvasRef.current.scrollTop;
@@ -61,6 +62,7 @@ const ShapeComponent = React.forwardRef<HTMLDivElement, Props>(({
 
   const onMouseMove = useCallback((e: MouseEvent) => {
   if (!canvasRef.current) return;
+  e.stopPropagation();
 
   const now = Date.now();
   if (now - lastMoveRef.current < THROTTLE_INTERVAL) return;
@@ -191,7 +193,8 @@ const ShapeComponent = React.forwardRef<HTMLDivElement, Props>(({
         left: shape.x,
         minWidth: Number(shape.style.paddingLeft) + Number(shape.style.paddingRight) + 'px',
         minHeight: Number(shape.style.paddingTop) + Number(shape.style.paddingBottom) + 'px',
-        ...style
+        ...style,
+        opacity: (Number(style?.opacity) || 0) / 100
       }}
     >
       <div

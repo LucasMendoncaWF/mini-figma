@@ -10,8 +10,8 @@ interface Props {
 }
 
 interface GuideLines {
-  x?: number; 
-  y?: number; 
+  x?: number;
+  y?: number;
   distance: number;
   type: 'left' | 'right' | 'centerX' | 'top' | 'bottom' | 'centerY';
 }
@@ -21,6 +21,10 @@ const Canvas: React.FC<Props> = ({ shapes, onUpdateShape }) => {
   const canvasRef = useRef<HTMLDivElement>(null);
   const { setFocusedShape, focusedShape, unit } = useShapesStore();
   const [alignmentLines, setAlignmentLines] = useState<GuideLines[]>([]);
+  const [isPanning, setIsPanning] = useState(false);
+  const [panStart, setPanStart] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const [panOffset, setPanOffset] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState<number>(1);
 
   const handleDrag = (draggingId: string) => {
     const lines = findAlignmentLines(draggingId);
@@ -34,7 +38,7 @@ const Canvas: React.FC<Props> = ({ shapes, onUpdateShape }) => {
     } else {
       setAlignmentLines([]);
     }
-  }, [focusedShape])
+  }, [focusedShape]);
 
   const findAlignmentLines = (draggingShapeId: string) => {
     const current = shapeRefs.current[draggingShapeId];
@@ -93,42 +97,100 @@ const Canvas: React.FC<Props> = ({ shapes, onUpdateShape }) => {
     return lines;
   };
 
+  const handleMouseDown = (e: React.MouseEvent) => {
+    setIsPanning(true);
+    setPanStart({ x: e.clientX - panOffset.x, y: e.clientY - panOffset.y });
+  };
+
+  const handleMouseMove = (e: MouseEvent) => {
+    if (!isPanning) return;
+    const x = e.clientX - panStart.x;
+    const y = e.clientY - panStart.y;
+    setPanOffset({ x, y });
+  };
+
+  const handleMouseUp = () => {
+    setIsPanning(false);
+  };
+
+  useEffect(() => {
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleMouseUp);
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
+    };
+  });
+
+  useEffect(() => {
+    const wrapper = canvasRef.current?.parentElement;
+    const canvas = canvasRef.current;
+    if (!wrapper || !canvas) return;
+
+    const wrapperRect = wrapper.getBoundingClientRect();
+    const canvasRect = canvas.getBoundingClientRect();
+
+    const initialX = (wrapperRect.width - canvasRect.width * zoom) / 2;
+    const initialY = (wrapperRect.height - canvasRect.height * zoom) / 2;
+
+    setPanOffset({ x: initialX, y: initialY });
+  }, [zoom]);
 
   return (
-    <div className='screen-height canvas' onClick={() => setFocusedShape(null)}>
-      <div
-        ref={canvasRef}
-        className='canvas__content'
-        style={{ backgroundSize: `${unit}px ${unit}px` }}
-      >
-        {shapes.map((shape) => (
-          <ShapeComponent
-            key={shape.id}
-            ref={(el) => { shapeRefs.current[shape.id] = el; }}
-            shape={shape}
-            onUpdate={onUpdateShape}
-            canvasRef={canvasRef}
-            onDragging={handleDrag}
-          />
-        ))}
+    <>
+      <div className='screen-height canvas' onClick={() => setFocusedShape(null)} onMouseDown={handleMouseDown}>
+        <div
+          ref={canvasRef}
+          className='canvas__content'
+          style={{
+            backgroundSize: `${unit}px ${unit}px`,
+            transform: `translate(${panOffset.x}px, ${panOffset.y}px) scale(${zoom})`,
+            transformOrigin: 'top left',
+          }}
+        >
+          {shapes.map((shape) => (
+            <ShapeComponent
+              key={shape.id}
+              ref={(el) => { shapeRefs.current[shape.id] = el; }}
+              shape={shape}
+              onUpdate={onUpdateShape}
+              canvasRef={canvasRef}
+              onDragging={handleDrag}
+            />
+          ))}
 
-        {alignmentLines.map((line, index) =>
-          line.x != null ? (
-            <div
-              key={index}
-              className="canvas__guide-line"
-              style={{ left: line.x, top: 0, bottom: 0, width: 2 }}
-            />
-          ) : (
-            <div
-              key={index}
-              className="canvas__guide-line"
-              style={{ top: line.y, left: 0, right: 0, height: 2 }}
-            />
-          )
-        )}
+          {alignmentLines.map((line, index) =>
+            line.x != null ? (
+              <div
+                key={index}
+                className="canvas__guide-line"
+                style={{ left: line.x, top: 0, bottom: 0, width: 2 }}
+              />
+            ) : (
+              <div
+                key={index}
+                className="canvas__guide-line"
+                style={{ top: line.y, left: 0, right: 0, height: 2 }}
+              />
+            )
+          )}
+        </div>
       </div>
-    </div>
+      <div className="canvas__zoom-slider flex">
+        <label htmlFor="zoom-range">{Math.round(zoom * 100)}%</label>
+        <input
+          id="zoom-range"
+          className='canvas__zoom-slider__input'
+          type="range"
+          min="0.5"
+          max="3"
+          step="0.05"
+          value={zoom}
+          onChange={(e) => setZoom(parseFloat(e.target.value))}
+        />
+        <button onClick={() => setZoom(1)} className='canvas__zoom-slider__button'>Reset</button>
+      </div>
+    </>
   );
 };
 
