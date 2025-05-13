@@ -8,10 +8,8 @@ export function createShape (get: () => ShapeStore) {
   if(!canvas) return;
 
   const canvasStyle = getComputedStyle(canvas);
-  console.log(canvasStyle.transform)
   const transformMatrix = canvasStyle.transform || 'matrix(1, 0, 0, 1, 0, 0)'; 
   const matrix = transformMatrix.match(/matrix\(([^)]+)\)/);
-  console.log(matrix)
   if(!matrix) return;
   const values = matrix[1].split(',').map(Number);
   const scaleX = values[0];
