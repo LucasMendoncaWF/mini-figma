@@ -29,15 +29,15 @@ To get started with the project locally, follow these steps:
 
 Clone the repository:
 
-´git clone https://github.com/yourusername/mini-figma.git´
+`git clone https://github.com/yourusername/mini-figma.git`
 
 Install dependencies:
 
-´cd mini-figma´
-npm install
+`cd mini-figma`
+`npm install`
 
 Run the development server:
 
-npm start
+`npm start`
 
 Open your browser and visit http://localhost:3000 to view the project.
