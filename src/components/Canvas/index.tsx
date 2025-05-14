@@ -24,7 +24,9 @@ const Canvas: React.FC<Props> = ({ shapes, onUpdateShape }) => {
   const [isPanning, setIsPanning] = useState(false);
   const [panStart, setPanStart] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const [panOffset, setPanOffset] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
-  const [zoom, setZoom] = useState<number>(1);
+  const [zoom, setZoom] = useState<number>(0.6);
+  const [zoomTarget, setZoomTarget] = useState(zoom);
+  const zoomRef = useRef(zoom);
 
   const handleDrag = (draggingId: string) => {
     const lines = findAlignmentLines(draggingId);
@@ -48,15 +50,16 @@ const Canvas: React.FC<Props> = ({ shapes, onUpdateShape }) => {
     const lines: GuideLines[] = [];
 
     const canvasRect = canvas.getBoundingClientRect();
-    const rect1 = current.getBoundingClientRect();
+    const zoom = zoomRef.current;
 
+    const rect1 = current.getBoundingClientRect();
     const shape1 = {
-      top: rect1.top - canvasRect.top,
-      bottom: rect1.bottom - canvasRect.top,
-      left: rect1.left - canvasRect.left,
-      right: rect1.right - canvasRect.left,
-      centerX: rect1.left - canvasRect.left + rect1.width / 2,
-      centerY: rect1.top - canvasRect.top + rect1.height / 2,
+      top: (rect1.top - canvasRect.top) / zoom,
+      bottom: (rect1.bottom - canvasRect.top) / zoom,
+      left: (rect1.left - canvasRect.left) / zoom,
+      right: (rect1.right - canvasRect.left) / zoom,
+      centerX: (rect1.left - canvasRect.left + rect1.width / 2) / zoom,
+      centerY: (rect1.top - canvasRect.top + rect1.height / 2) / zoom,
     };
 
     const threshold = 5;
@@ -65,12 +68,12 @@ const Canvas: React.FC<Props> = ({ shapes, onUpdateShape }) => {
       if (id === draggingShapeId || !el) continue;
         const rect2 = el.getBoundingClientRect();
         const shape2 = {
-          top: rect2.top - canvasRect.top,
-          bottom: rect2.bottom - canvasRect.top,
-          left: rect2.left - canvasRect.left,
-          right: rect2.right - canvasRect.left,
-          centerX: rect2.left - canvasRect.left + rect2.width / 2,
-          centerY: rect2.top - canvasRect.top + rect2.height / 2,
+          top: (rect2.top - canvasRect.top) / zoom,
+          bottom: (rect2.bottom - canvasRect.top) / zoom,
+          left: (rect2.left - canvasRect.left) / zoom,
+          right: (rect2.right - canvasRect.left) / zoom,
+          centerX: (rect2.left - canvasRect.left + rect2.width / 2) / zoom,
+          centerY: (rect2.top - canvasRect.top + rect2.height / 2) / zoom,
         };
 
       if (Math.abs(shape1.left - shape2.left) <= threshold) {
@@ -124,17 +127,48 @@ const Canvas: React.FC<Props> = ({ shapes, onUpdateShape }) => {
 
   useEffect(() => {
     const wrapper = canvasRef.current?.parentElement;
+    if (!wrapper) return;
+
+    const wrapperRect = wrapper.getBoundingClientRect();
+
+    const centerScreenX = wrapperRect.width / 2;
+    const centerScreenY = wrapperRect.height / 2;
+
+    const prevZoom = zoomRef.current;
+    const scale = zoom / prevZoom;
+
+    const newPanX = centerScreenX - (centerScreenX - panOffset.x) * scale;
+    const newPanY = centerScreenY - (centerScreenY - panOffset.y) * scale;
+
+    setPanOffset({ x: newPanX, y: newPanY });
+    zoomRef.current = zoom;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [zoom]);
+
+
+  useEffect(() => {
+    const wrapper = canvasRef.current?.parentElement;
     const canvas = canvasRef.current;
     if (!wrapper || !canvas) return;
 
     const wrapperRect = wrapper.getBoundingClientRect();
-    const canvasRect = canvas.getBoundingClientRect();
+    const canvasWidth = canvas.offsetWidth;
+    const canvasHeight = canvas.offsetHeight;
 
-    const initialX = (wrapperRect.width - canvasRect.width * zoom) / 2;
-    const initialY = (wrapperRect.height - canvasRect.height * zoom) / 2;
+    const initialX = (wrapperRect.width - canvasWidth * zoom) / 2;
+    const initialY = (wrapperRect.height - canvasHeight * zoom) / 2;
 
     setPanOffset({ x: initialX, y: initialY });
-  }, [zoom]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); 
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setZoom(zoomTarget);
+    }, 15);
+
+    return () => clearTimeout(timeout);
+  }, [zoomTarget]);
 
   return (
     <>
@@ -144,7 +178,7 @@ const Canvas: React.FC<Props> = ({ shapes, onUpdateShape }) => {
           className='canvas__content'
           style={{
             backgroundSize: `${unit}px ${unit}px`,
-            transform: `translate(${panOffset.x}px, ${panOffset.y}px) scale(${zoom})`,
+            transform: `translate(${panOffset.x }px, ${panOffset.y}px) scale(${zoom})`,
             transformOrigin: 'top left',
           }}
         >
@@ -153,6 +187,7 @@ const Canvas: React.FC<Props> = ({ shapes, onUpdateShape }) => {
               key={shape.id}
               ref={(el) => { shapeRefs.current[shape.id] = el; }}
               shape={shape}
+              zoom={zoom}
               onUpdate={onUpdateShape}
               canvasRef={canvasRef}
               onDragging={handleDrag}
@@ -182,11 +217,11 @@ const Canvas: React.FC<Props> = ({ shapes, onUpdateShape }) => {
           id="zoom-range"
           className='canvas__zoom-slider__input'
           type="range"
-          min="0.5"
-          max="3"
+          min="0.2"
+          max="2"
           step="0.05"
           value={zoom}
-          onChange={(e) => setZoom(parseFloat(e.target.value))}
+          onChange={(e) => setZoomTarget(parseFloat(e.target.value))}
         />
         <button onClick={() => setZoom(1)} className='canvas__zoom-slider__button'>Reset</button>
       </div>
