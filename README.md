@@ -1,43 +1,39 @@
-Mini Figma - Layout Editor
+# Mini Figma - Layout Editor
 
 Mini Figma is a layout editor inspired by Figma, developed with React and Zustand. The project allows you to create, edit, and view simple designs using an intuitive and fluid interface, with efficient state management using Zustand.
-Technologies
 
-    - React: JavaScript library for building user interfaces.
+## Technologies
 
-    - Zustand: A simple and efficient state management tool for React.
+- **React**;
+- **TypeScript**;
+- **Zustand**;
+- **CSS/SCSS**;
 
-    - CSS/SCSS: Styling the project with a focus on responsiveness and flexibility.
+## Features
 
-Features
+- **Shape Creation and Editing**: Create and edit shapes within the layout.
+- **Layer Management**: Organize shapes into layers and adjust their position in the Z-index.
+- **Drag and Drop**: Easily drag shapes around the canvas to reposition them.
+- **Resizable Elements**: Resize shapes dynamically using mouse events.
+- **Interactive Canvas**: A fluid canvas for creating designs.
+- **State Management with Zustand**: Efficient and simple global state management for handling design updates.
 
-    - Shape Creation and Editing: Create and edit various shapes (rectangles, circles, etc.) within the layout.
-
-    - Layer Management: Organize shapes into layers and adjust their position in the Z-index.
-
-    - Drag and Drop: Easily drag shapes around the canvas to reposition them.
-
-    - Resizable Elements: Resize shapes dynamically using mouse or touch events.
-
-    - Interactive Canvas: A responsive and fluid canvas for a seamless design experience.
-
-    - State Management with Zustand: Efficient and simple global state management for handling design updates.
-
-Setup and Installation
+## Setup and Installation
 
 To get started with the project locally, follow these steps:
 
-Clone the repository:
+1. **Clone the repository**:
 
-`git clone https://github.com/yourusername/mini-figma.git`
+    `git clone https://github.com/yourusername/mini-figma.git`
 
-Install dependencies:
+2. **Install dependencies**:
 
-`cd mini-figma`
-`npm install`
+    `cd mini-figma`
 
-Run the development server:
+    `npm install`
 
-`npm start`
+3. **Run the development server**:
 
-Open your browser and visit http://localhost:3000 to view the project.
+    `npm start`
+
+4. Open your browser and visit http://localhost:3000 to view the project.
