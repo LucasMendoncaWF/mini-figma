@@ -165,7 +165,7 @@ const Canvas: React.FC<Props> = ({ shapes, onUpdateShape }) => {
   useEffect(() => {
     const timeout = setTimeout(() => {
       setZoom(zoomTarget);
-    }, 100);
+    }, 40);
 
     return () => clearTimeout(timeout);
   }, [zoomTarget]);
@@ -220,7 +220,7 @@ const Canvas: React.FC<Props> = ({ shapes, onUpdateShape }) => {
           min="0.2"
           max="2"
           step="0.05"
-          value={zoom}
+          value={zoomTarget}
           onChange={(e) => setZoomTarget(parseFloat(e.target.value))}
         />
         <button onClick={() => setZoom(1)} className='canvas__zoom-slider__button'>Reset</button>
