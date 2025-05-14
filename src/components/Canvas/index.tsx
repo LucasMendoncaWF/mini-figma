@@ -165,7 +165,7 @@ const Canvas: React.FC<Props> = ({ shapes, onUpdateShape }) => {
   useEffect(() => {
     const timeout = setTimeout(() => {
       setZoom(zoomTarget);
-    }, 20);
+    }, 30);
 
     return () => clearTimeout(timeout);
   }, [zoomTarget]);
