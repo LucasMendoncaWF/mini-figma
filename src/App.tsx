@@ -12,7 +12,7 @@ const App = () => {
         <img src={DevicesImage} alt='devices' width={100} height={80} />
         <p>Screen size not allowed. Please access from a bigger screen.</p>
       </div>
-      <div className='flex'>
+      <div className='flex canvas-area'>
         <Canvas shapes={shapes} onUpdateShape={updateShape} />
         <SideBar />
       </div>
