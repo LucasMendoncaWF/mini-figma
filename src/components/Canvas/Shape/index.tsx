@@ -40,7 +40,7 @@ const ShapeComponent = forwardRef<HTMLDivElement, Props>(({
     else if (ref) ref.current = el;
   };
 
-  const px = (value: number | string) => `${value}px`;
+  const px = (value?: number | string) => value ? `${value.toString().replace('px', '')}px` : '0px';
 
   const convertUnits = useCallback((input: React.CSSProperties) => {
     const pixelFields: (keyof React.CSSProperties)[] = [
@@ -177,13 +177,23 @@ const ShapeComponent = forwardRef<HTMLDivElement, Props>(({
       onClick={handleClick}
       className={`shape ${isFocused ? 'shape--focused' : ''}`}
       style={{
+        ...style,
         position: 'absolute',
         top: shape.y,
         left: shape.x,
         minWidth: px(Number(shape.style.paddingLeft) + Number(shape.style.paddingRight)),
         minHeight: px(Number(shape.style.paddingTop) + Number(shape.style.paddingBottom)),
-        ...style,
         opacity: (Number(style?.opacity) || 0) / 100,
+        width: px(shape.style.width),
+        height: px(shape.style.height),
+        borderWidth: px(shape.style.borderWidth),
+        borderRadius: px(shape.style.borderRadius),
+        fontSize: px(shape.style.fontSize),
+        lineHeight: px(shape.style.lineHeight),
+        paddingLeft: px(shape.style.paddingLeft),
+        paddingRight: px(shape.style.paddingRight),
+        paddingTop: px(shape.style.paddingTop),
+        paddingBottom: px(shape.style.paddingBottom),
       }}
     >
       <div className="shape__resize-handle" onMouseDown={handleResizeMouseDown} />

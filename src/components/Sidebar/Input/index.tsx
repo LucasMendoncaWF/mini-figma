@@ -3,7 +3,6 @@ import { useEffect, useRef } from "react";
 export interface ChangeValues {
   value: string | number;
   name: string;
-  isPx?: boolean;
 }
 
 interface Props {
@@ -38,7 +37,6 @@ onChange
     onChange({
       value: e.target.value,
       name,
-      isPx: unit === 'px'
     })
   }
 

@@ -35,10 +35,10 @@ export default function SideBar() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [focusedShape]);
 
-  const onChange = ({ value, name, isPx }: ChangeValues) => {
+  const onChange = ({ value, name }: ChangeValues) => {
     if (!focusedShape?.id) return;
 
-    const updatedStyle = { ...style, [name]: isPx ? value.toString().replace('px', '') + 'px' : value };
+    const updatedStyle = { ...style, [name]: value };
     setStyle(updatedStyle);
     updateShape(focusedShape.id, { style: updatedStyle });
   };
