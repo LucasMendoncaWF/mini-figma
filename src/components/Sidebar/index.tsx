@@ -35,10 +35,10 @@ export default function SideBar() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [focusedShape]);
 
-  const onChange = ({ value, name }: ChangeValues) => {
+  const onChange = ({ value, name, isPx }: ChangeValues) => {
     if (!focusedShape?.id) return;
 
-    const updatedStyle = { ...style, [name]: value };
+    const updatedStyle = { ...style, [name]: isPx ? value.toString().replace('px', '') + 'px' : value };
     setStyle(updatedStyle);
     updateShape(focusedShape.id, { style: updatedStyle });
   };
@@ -67,8 +67,8 @@ export default function SideBar() {
         <div className="side-bar__content">
           <Section title="Container">
             <Row>
-              <HalfInput label="Width" name="width" value={style?.width} onChange={onChange} />
-              <HalfInput label="Height" name="height" value={style?.height} onChange={onChange} />
+              <HalfInput label="Width" unit="px" name="width" value={style?.width} onChange={onChange} />
+              <HalfInput label="Height" unit="px" name="height" value={style?.height} onChange={onChange} />
             </Row>
             <Row>
               <HalfInput label="Opacity" name="opacity" value={style?.opacity} onChange={onChange} min={0} max={100} />
@@ -79,16 +79,16 @@ export default function SideBar() {
 
           <Section title="Border">
             <Row>
-              <HalfInput label="Border Size" name="borderWidth" value={style?.borderWidth} onChange={onChange} />
-              <HalfInput label="Border Radius" name="borderRadius" value={style?.borderRadius} onChange={onChange} />
+              <HalfInput label="Border Size" unit="px" name="borderWidth" value={style?.borderWidth} onChange={onChange} />
+              <HalfInput label="Border Radius" unit="px" name="borderRadius" value={style?.borderRadius} onChange={onChange} />
             </Row>
             <ColorPicker label="Border Color" value={style?.borderColor} onChange={onChange} name="borderColor" />
           </Section>
 
           <Section title="Content">
             <Row>
-              <HalfInput label="Font Size" name="fontSize" value={style?.fontSize} onChange={onChange} />
-              <HalfInput label="Line Height" name="lineHeight" value={style?.lineHeight} onChange={onChange} />
+              <HalfInput label="Font Size" unit="px" name="fontSize" value={style?.fontSize} onChange={onChange} />
+              <HalfInput label="Line Height" unit="px" name="lineHeight" value={style?.lineHeight} onChange={onChange} />
             </Row>
             <TextArea size="full" label="Text Content" name="text-content" value={text} onChange={onChangeTextArea} />
             <ColorPicker label="Text Color" value={style?.color} onChange={onChange} name="color" />
@@ -97,12 +97,12 @@ export default function SideBar() {
 
           <Section title="Padding">
             <Row>
-              <HalfInput label="Padding Left" name="paddingLeft" value={style?.paddingLeft} onChange={onChange} />
-              <HalfInput label="Padding Right" name="paddingRight" value={style?.paddingRight} onChange={onChange} />
+              <HalfInput label="Padding Left" unit="px" name="paddingLeft" value={style?.paddingLeft} onChange={onChange} />
+              <HalfInput label="Padding Right" unit="px" name="paddingRight" value={style?.paddingRight} onChange={onChange} />
             </Row>
             <Row>
-              <HalfInput label="Padding Top" name="paddingTop" value={style?.paddingTop} onChange={onChange} />
-              <HalfInput label="Padding Bottom" name="paddingBottom" value={style?.paddingBottom} onChange={onChange} />
+              <HalfInput label="Padding Top" unit="px" name="paddingTop" value={style?.paddingTop} onChange={onChange} />
+              <HalfInput label="Padding Bottom" unit="px" name="paddingBottom" value={style?.paddingBottom} onChange={onChange} />
             </Row>
           </Section>
         </div>
@@ -124,6 +124,6 @@ function Row({ children }: { children: React.ReactNode }) {
   return <div className="flex justify-between gap">{children}</div>;
 }
 
-function HalfInput(props: Omit<React.ComponentProps<typeof Input>, 'size' | 'type' | 'unit'> & { value: any }) {
-  return <Input size="half" type="number" unit="px" {...props} />;
+function HalfInput(props: React.ComponentProps<typeof Input> & { value: any, unit?: string }) {
+  return <Input size="half" type="number" {...props} />;
 }

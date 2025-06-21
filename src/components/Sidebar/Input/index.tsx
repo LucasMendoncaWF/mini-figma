@@ -3,6 +3,7 @@ import { useEffect, useRef } from "react";
 export interface ChangeValues {
   value: string | number;
   name: string;
+  isPx?: boolean;
 }
 
 interface Props {
@@ -12,7 +13,6 @@ interface Props {
   min?: number;
   max?: number;
   unit?: string;
-  mask?: string;
   size?: 'half' | 'full'
   type?: 'text' | 'number';
   isColor?: boolean;
@@ -29,7 +29,6 @@ max,
 unit,
 size = 'full',
 isColor,
-mask,
 onChange
 }: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -39,6 +38,7 @@ onChange
     onChange({
       value: e.target.value,
       name,
+      isPx: unit === 'px'
     })
   }
 

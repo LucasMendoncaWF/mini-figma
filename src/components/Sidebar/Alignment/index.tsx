@@ -23,7 +23,7 @@ export default function Alignment({onChange, value}: Props) {
   return (
     <div className="flex alignment-style">
       {positions.map(position => 
-        <button className={value === position[0] ? 'selected' : ''} onClick={() => onChange({value: position[0], name: 'textAlign'})}><img src={position[1]} alt={position[0]}/></button>
+        <button key={position[0]} className={value === position[0] ? 'selected' : ''} onClick={() => onChange({value: position[0], name: 'textAlign'})}><img src={position[1]} alt={position[0]}/></button>
       )}
     </div>
   )
